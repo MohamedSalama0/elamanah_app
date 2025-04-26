@@ -1,5 +1,5 @@
 import 'package:farm_project/core/cubits/auth/auth_cubit.dart';
-import 'package:farm_project/src/presentation/auth/signin/signin_screen.dart';
+import 'package:farm_project/src/presentation/home/home_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,11 +16,33 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [BlocProvider(create: (ctx) => AuthCubit())],
+      providers: [
+        BlocProvider(create: (ctx) => AuthCubit()),
+      ],
       child: MaterialApp(
-        title: 'Flutter',
+        title: 'Farm Management',
         debugShowCheckedModeBanner: false,
-        home: const SignInScreen(),
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.deepPurple,
+            primary: Colors.green.shade700,
+            secondary: Colors.blue.shade400,
+          ),
+          textTheme: const TextTheme(
+            titleLarge: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+            ),
+            bodyMedium: TextStyle(
+              fontSize: 16,
+            ),
+          ),
+          iconTheme: const IconThemeData(
+            size: 48,
+          ),
+          useMaterial3: true,
+        ),
+        home: const HomeScreen(),
       ),
     );
   }
