@@ -1,3 +1,6 @@
+import 'package:farm_project/core/models/sector_model.dart';
+import 'package:farm_project/core/services/dummy_data_uploader_service.dart';
+import 'package:farm_project/core/services/firebase_service.dart';
 import 'package:farm_project/src/presentation/palm/palms_screen.dart';
 import 'package:farm_project/src/widgets/square_card.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +25,9 @@ class FarmScreen extends StatelessWidget {
           title: 'قطاع ${index + 1}',
           gridSize: '32 × 31',
           onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>PalmsScreen()));
+            DummyDataUploaderService().uploadDummyData();
+            //FirebaseService().addSector(SectorModel(id: '1',name: '12',description: 'desc'));
+            // Navigator.push(context, MaterialPageRoute(builder: (context)=>PalmsScreen()));
             // TODO: Navigate to Square Details Screen
           },
         );
