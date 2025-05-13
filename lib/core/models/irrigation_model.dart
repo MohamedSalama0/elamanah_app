@@ -1,10 +1,10 @@
 class IrrigationModel {
-  final double pipeSize;
-  final String segmentId;
-  final double length;
-  final double width;
-  final double price;
-  final int count;
+   double pipeSize;
+   String segmentId;
+   double length;
+   double width;
+   double price;
+   int count;
 
   IrrigationModel({
     required this.pipeSize,

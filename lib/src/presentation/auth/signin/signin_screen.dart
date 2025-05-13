@@ -30,7 +30,7 @@ class _SignInScreenState extends State<SignInScreen> {
       backgroundColor: kWhite,
       body: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
-          if (state is AuthSuccess) {
+          if (state is AuthSuccess || state is AuthMobileLoginSuccess) {
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (context) => HomeScreen()),
@@ -39,6 +39,8 @@ class _SignInScreenState extends State<SignInScreen> {
             SnackBarHelper.showMySnackbar(context, 'تم تسجيل الدخول بنجاح');
             // Navigate to home screen here
           } else if (state is AuthFailure) {
+            SnackBarHelper.showMySnackbar(context, state.error, warning: true);
+          }else if (state is AuthMobileLoginFailure) {
             SnackBarHelper.showMySnackbar(context, state.error, warning: true);
           }
         },
@@ -64,28 +66,28 @@ class _SignInScreenState extends State<SignInScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               SizedBox(height: sizedH(context) * 0.03),
-                             DefaultTextFormField(
+                            //  DefaultTextFormField(
+                            //     controller: emailController,
+                            //     type: TextInputType.emailAddress,
+                            //     textAlign: TextAlign.right,
+                            //     hintText: '',
+                            //     fontSize: FontSize.s20,
+                            //     isPasswordVisible: false,
+                            //     suffixPressed: () {
+                            //       // prov.changeVisiblePassword();
+                            //     },
+                            //     validate: (v) {
+                            //       if (v!.isEmpty) {
+                            //         // if (prov.autoValidateMode) {
+                            //         return ' من فضلك ادخل الايميل';
+                            //         // }
+                            //       }
+                            //       return null;
+                            //     },
+                            //   ),
+                              InputPhoneNumberSection(
                                 controller: emailController,
-                                type: TextInputType.emailAddress,
-                                textAlign: TextAlign.right,
-                                hintText: 'الاليميل',
-                                fontSize: FontSize.s20,
-                                isPasswordVisible: false,
-                                suffixPressed: () {
-                                  // prov.changeVisiblePassword();
-                                },
-                                validate: (v) {
-                                  if (v!.isEmpty) {
-                                    // if (prov.autoValidateMode) {
-                                    return ' من فضلك ادخل الايميل';
-                                    // }
-                                  }
-                                  return null;
-                                },
                               ),
-                              // InputPhoneNumberSection(
-                              //   controller: emailController,
-                              // ),
                              
                               // DefaultTextFormField(
                               //   controller: ,
@@ -126,7 +128,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               DefaultButton(
                                 onTap: () async {
                                   if (formKey.currentState!.validate()) {
-                                    AuthCubit().login(
+                                    AuthCubit().loginWithPhone(
                                       emailController.text,
                                       passwordController.text,
                                     );

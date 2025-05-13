@@ -162,7 +162,7 @@ class InputPhoneNumberSection extends StatelessWidget {
   });
   final TextEditingController controller;
   final bool readOnly;
-  String countryCodeValue;
+  final String countryCodeValue;
   @override
   Widget build(BuildContext context) {
     return Row(

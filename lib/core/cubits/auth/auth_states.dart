@@ -15,3 +15,16 @@ class AuthFailure extends AuthState {
   final String error;
   AuthFailure(this.error);
 }
+
+
+class AuthMobileLoginLoading extends AuthState {}
+
+class AuthMobileLoginSuccess extends AuthState {
+  
+  AuthMobileLoginSuccess();
+}
+
+class AuthMobileLoginFailure extends AuthState {
+  final String error;
+  AuthMobileLoginFailure(this.error);
+}

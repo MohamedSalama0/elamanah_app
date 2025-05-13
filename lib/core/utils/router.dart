@@ -41,4 +41,8 @@ void pushNamed(context, route, {arguments, bool rootNavigator = true}) {
     route,
     arguments: arguments,
   );
+
 }
+   Future<void> push(BuildContext context, Widget widget) {
+    return Navigator.push(context, MaterialPageRoute(builder: (_)=>widget));
+  }

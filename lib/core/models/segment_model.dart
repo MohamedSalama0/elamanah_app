@@ -1,3 +1,5 @@
+import 'irrigation_model.dart'; // Import your IrrigationModel class
+
 class SegmentModel {
   final String id;
   final String name;
@@ -10,6 +12,26 @@ class SegmentModel {
   final double landServiceCost;
   final double equipmentUsedCost;
 
+  // Generator details
+  final double generatorTotalHours;
+  final String generatorType;
+  final String generatorName;
+  final double generatorElectricityInvoice;
+  final double generatorOilPrice;
+  final double generatorMaintenanceCost;
+  final double generatorOilChange;
+  final double generatorFiltersCost;
+
+  // Agricultural details
+  final double fertilizingPrice;
+  final double contractorPersonsCost;
+  final double landWorkPrice;
+  final double equipmentCost;
+
+  // Irrigation
+  final double irrigationTransportCost;
+  final List<IrrigationModel> irrigationItems;
+
   SegmentModel({
     required this.id,
     required this.name,
@@ -21,20 +43,50 @@ class SegmentModel {
     required this.personCost,
     required this.landServiceCost,
     required this.equipmentUsedCost,
+    required this.generatorTotalHours,
+    required this.generatorType,
+    required this.generatorName,
+    required this.generatorElectricityInvoice,
+    required this.generatorOilPrice,
+    required this.generatorMaintenanceCost,
+    required this.generatorOilChange,
+    required this.generatorFiltersCost,
+    required this.fertilizingPrice,
+    required this.contractorPersonsCost,
+    required this.landWorkPrice,
+    required this.equipmentCost,
+    required this.irrigationTransportCost,
+    required this.irrigationItems,
   });
 
   factory SegmentModel.fromJson(Map<String, dynamic> json) {
     return SegmentModel(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      description: json['description'] as String,
-      horizontalPalms: json['horizontalPalms'] as int,
-      verticalPalms: json['verticalPalms'] as int,
+      id: json['id'],
+      name: json['name'],
+      description: json['description'],
+      horizontalPalms: json['horizontalPalms'],
+      verticalPalms: json['verticalPalms'],
       sizeInFaddan: (json['sizeInFaddan'] as num).toDouble(),
-      personType: json['personType'] as int,
+      personType: json['personType'],
       personCost: (json['personCost'] as num).toDouble(),
       landServiceCost: (json['landServiceCost'] as num).toDouble(),
       equipmentUsedCost: (json['equipmentUsedCost'] as num).toDouble(),
+      generatorTotalHours: (json['generatorTotalHours'] as num).toDouble(),
+      generatorType: json['generatorType'],
+      generatorName: json['generatorName'],
+      generatorElectricityInvoice: (json['generatorElectricityInvoice'] as num).toDouble(),
+      generatorOilPrice: (json['generatorOilPrice'] as num).toDouble(),
+      generatorMaintenanceCost: (json['generatorMaintenanceCost'] as num).toDouble(),
+      generatorOilChange: (json['generatorOilChange'] as num).toDouble(),
+      generatorFiltersCost: (json['generatorFiltersCost'] as num).toDouble(),
+      fertilizingPrice: (json['fertilizingPrice'] as num).toDouble(),
+      contractorPersonsCost: (json['contractorPersonsCost'] as num).toDouble(),
+      landWorkPrice: (json['landWorkPrice'] as num).toDouble(),
+      equipmentCost: (json['equipmentCost'] as num).toDouble(),
+      irrigationTransportCost: (json['irrigationTransportCost'] as num).toDouble(),
+      irrigationItems: (json['irrigationItems'] as List<dynamic>)
+          .map((e) => IrrigationModel.fromJson(e))
+          .toList(),
     );
   }
 
@@ -50,6 +102,20 @@ class SegmentModel {
       'personCost': personCost,
       'landServiceCost': landServiceCost,
       'equipmentUsedCost': equipmentUsedCost,
+      'generatorTotalHours': generatorTotalHours,
+      'generatorType': generatorType,
+      'generatorName': generatorName,
+      'generatorElectricityInvoice': generatorElectricityInvoice,
+      'generatorOilPrice': generatorOilPrice,
+      'generatorMaintenanceCost': generatorMaintenanceCost,
+      'generatorOilChange': generatorOilChange,
+      'generatorFiltersCost': generatorFiltersCost,
+      'fertilizingPrice': fertilizingPrice,
+      'contractorPersonsCost': contractorPersonsCost,
+      'landWorkPrice': landWorkPrice,
+      'equipmentCost': equipmentCost,
+      'irrigationTransportCost': irrigationTransportCost,
+      'irrigationItems': irrigationItems.map((e) => e.toJson()).toList(),
     };
   }
 }
