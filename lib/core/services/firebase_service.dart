@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:farm_project/core/models/farm_config_model.dart';
 import 'package:farm_project/core/models/sector_model.dart';
 import 'package:farm_project/core/models/segment_model.dart';
 import 'package:farm_project/core/models/palm_model.dart';
@@ -8,6 +9,42 @@ import 'package:farm_project/core/models/irrigation_model.dart';
 
 class FirebaseService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  // ----------------- AppConfig -----------------
+
+Future<FarmConfigModel> fetchFarmConfig() async {
+ 
+       // Reference to the 'configs' collection
+    CollectionReference configsRef = FirebaseFirestore.instance.collection('configs');
+    
+    // Get the first document (assuming you only want one config)
+    DocumentSnapshot generator = await configsRef.doc('generator').get();
+    DocumentSnapshot constant_worker= await configsRef.doc('constant_worker').get();
+    return FarmConfigModel.fromJson(
+      {
+        'generator': generator.data() as Map<String,dynamic>,
+        'constant_worker': constant_worker.data() as Map<String,dynamic>
+      }
+    );
+
+
+ // if (!doc.exists) throw Exception('Config not found');
+
+}
+
+
+
+Future<void> updateConstantWorker({
+  required Map<String, dynamic> data,
+}) async {
+  final ref = _firestore
+      .collection('configs')
+      .doc('constant_worker');
+     
+
+  await ref.update(data);
+}
+
 
   // ----------------- Sector -----------------
 
@@ -87,18 +124,15 @@ class FirebaseService {
     'equipmentUsedCost': newEquipmentCost,
   });
 }
-Future<void> updateGeneratorForSegment({
-  required String sectorId,
-  required String segmentId,
+Future<void> updateGenerator({
   required Map<String, dynamic> generatorData,
 }) async {
-  final segmentRef = _firestore
-      .collection('sectors')
-      .doc(sectorId)
-      .collection('segments')
-      .doc(segmentId);
+  final ref = _firestore
+      .collection('configs')
+      .doc('generator');
+     
 
-  await segmentRef.update(generatorData);
+  await ref.update(generatorData);
 }
 
 Future<void> updateContractorPersonCost({
@@ -119,6 +153,7 @@ Future<void> updateLaborCostsForSegment({
   required String segmentId,
   required double fertilizingCost,
   required double landWorkCost,
+  required int fertlizingHours,
   required double contractorCost,
 }) async {
   await _firestore
@@ -129,6 +164,7 @@ Future<void> updateLaborCostsForSegment({
       .update({
         'fertilizingPrice': fertilizingCost,
         'landWorkPrice': landWorkCost,
+        'fertlizingHours': fertlizingHours,
         'contractorPersonsCost': contractorCost,
       });
 }

@@ -28,7 +28,7 @@ class SegmentCalculationScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            calculationItem(context, 'إعدادات الري', EditIrrigationScreen()),
+            calculationItem(context, 'شبكة الري', EditIrrigationScreen()),
             calculationItem(
               context,
               'تكلفة المعدات',
@@ -59,6 +59,8 @@ class SegmentCalculationScreen extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
       child: DefaultButton(
+        fontSize: 23,
+        
         onTap: () {
           Navigator.push(
             context,

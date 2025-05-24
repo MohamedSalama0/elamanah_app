@@ -1,3 +1,4 @@
+import 'package:farm_project/core/cubits/app/app_config_cubit.dart';
 import 'package:farm_project/core/cubits/auth/auth_cubit.dart';
 import 'package:farm_project/core/services/bloc_observer.dart';
 import 'package:farm_project/src/presentation/auth/signin/signin_screen.dart';
@@ -21,7 +22,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [BlocProvider(create: (ctx) => AuthCubit()..tryAutoLogin())],
+      providers: [
+        BlocProvider(create: (ctx) => AuthCubit()..tryAutoLogin()),
+        BlocProvider(create: (ctx) => AppConfigCubit()..fetchAppConfig()),
+      ],
       child: MaterialApp(
         title: 'Farm Management',
         debugShowCheckedModeBanner: false,

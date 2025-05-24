@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:farm_project/core/cubits/app/app_config_cubit.dart';
 import 'package:farm_project/core/cubits/auth/auth_cubit.dart';
 import 'package:farm_project/core/cubits/palms/palm_cubit.dart';
+import 'package:farm_project/core/models/generator_model.dart';
 import 'package:farm_project/src/presentation/palm/edit_palm_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:farm_project/core/models/palm_model.dart';
@@ -8,7 +10,7 @@ import 'package:farm_project/core/models/segment_model.dart';
 import 'package:farm_project/core/models/sector_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class PalmDetailsScreen extends StatelessWidget {
+class PalmDetailsScreen extends StatefulWidget {
   final PalmModel palm;
   final SegmentModel segment;
   final SectorModel sector;
@@ -19,6 +21,19 @@ class PalmDetailsScreen extends StatelessWidget {
     required this.segment,
     required this.sector,
   });
+
+  @override
+  State<PalmDetailsScreen> createState() => _PalmDetailsScreenState();
+}
+
+class _PalmDetailsScreenState extends State<PalmDetailsScreen> {
+late GeneratorModel generator;
+@override
+  void initState() {
+    super.initState();
+       generator = AppConfigCubit().config!.generator;
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +53,9 @@ class PalmDetailsScreen extends StatelessWidget {
                       child: Builder(
                         builder: (context) {
                           return EditPalmScreen(
-                            palm: palm,
-                            sector: sector,
-                            segment: segment,
+                            palm: widget.palm,
+                            sector: widget.sector,
+                            segment: widget.segment,
                           );
                         },
                       ),
@@ -68,27 +83,27 @@ class PalmDetailsScreen extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    _buildHeader(theme, 'القطاع', sector.name),
-                    _buildHeader(theme, 'القطعة', segment.name),
+                    _buildHeader(theme, 'القطاع', widget.sector.name),
+                    _buildHeader(theme, 'القطعة', widget.segment.name),
                   ],
                 ),
-                  PalmImage(imageUrl: palm.image??''),
+                  PalmImage(imageUrl: widget.palm.image??''),
                 const SizedBox(height: 16),
                 _buildDetail(
                   theme,
                   'نخلة رقم',
-                  '(${palm.coordX}/ ${palm.coordY})',
+                  '(${widget.palm.coordX}/ ${widget.palm.coordY})',
                 ),
-                _buildDetail(theme, 'رسوم المياه', '${palm.waterCharge}'),
-                _buildDetail(theme, 'رسوم السماد', '${palm.fertilizeCharge}'),
-                _buildDetail(theme, 'رسوم المقاول', '${palm.contractorCharge}'),
+                _buildDetail(theme, 'رسوم المياه', '${widget.palm.waterCharge}'),
+                _buildDetail(theme, 'رسوم السماد', '${calculateFertlize()}'),
+                _buildDetail(theme, 'رسوم المقاول', '${widget.palm.contractorCharge}'),
                 _buildDetail(
                   theme,
                   'رسوم الكهرباء',
-                  '${palm.electricityCharge}',
+                  '${widget.palm.electricityCharge}',
                 ),
-                _buildDetail(theme, 'رسوم الري', '${palm.irrigateCharge}'),
-                _buildDetail(theme, 'رسوم الأرض', '${palm.landCharge}'),
+                _buildDetail(theme, 'رسوم الري', '${widget.palm.irrigateCharge}'),
+                _buildDetail(theme, 'رسوم الأرض', '${widget.palm.landCharge}'),
               ],
             ),
           ),
@@ -127,6 +142,16 @@ class PalmDetailsScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  double calculateFertlize(){
+    final solarPrice = generator.oilPrice;
+    final costPerHour = generator.electricityInvoice;
+
+    final fertlizingHours = widget.segment.fertlizingHours;
+    final fertlizingCost = widget.segment.fertilizingPrice;
+
+    return (((solarPrice * costPerHour)*fertlizingHours)/992) + (fertlizingCost/992);
   }
 }
 

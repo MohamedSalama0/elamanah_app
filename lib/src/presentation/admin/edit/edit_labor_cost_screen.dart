@@ -11,6 +11,7 @@ class EditLaborCostsScreen extends StatefulWidget {
 class _EditLaborCostsScreenState extends State<EditLaborCostsScreen> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _fertilizingController;
+  late TextEditingController _fertilizingHoursController;
   late TextEditingController _landWorkController;
   late TextEditingController _contractorController;
 
@@ -23,6 +24,9 @@ class _EditLaborCostsScreenState extends State<EditLaborCostsScreen> {
     );
     _landWorkController = TextEditingController(
       text: segment.landWorkPrice.toString(),
+    );
+    _fertilizingHoursController = TextEditingController(
+      text: segment.fertlizingHours.toString(),
     );
     _contractorController = TextEditingController(
       text: segment.contractorPersonsCost.toString(),
@@ -40,7 +44,8 @@ class _EditLaborCostsScreenState extends State<EditLaborCostsScreen> {
           child: ListView(
             children: [
               _buildField(_fertilizingController, 'تكلفة التسميد'),
-              _buildField(_landWorkController, 'تكلفة تمهيد الأرض'),
+              _buildField(_fertilizingHoursController, 'عدد ساعات التسميد'),
+              _buildField(_landWorkController, 'تكلفة خدمة الأرض'),
               _buildField(_contractorController, 'تكلفة مقاولين الأفراد'),
               const SizedBox(height: 20),
               ElevatedButton(onPressed: _save, child: const Text('حفظ')),
@@ -72,6 +77,7 @@ class _EditLaborCostsScreenState extends State<EditLaborCostsScreen> {
       SegmentCubit().updateLaborCosts(
         fertilizingCost: double.parse(_fertilizingController.text),
         landWorkCost: double.parse(_landWorkController.text),
+        fertlizingHours: int.parse(_fertilizingHoursController.text),
         contractorCost: double.parse(_contractorController.text),
       );
       Navigator.pop(context);

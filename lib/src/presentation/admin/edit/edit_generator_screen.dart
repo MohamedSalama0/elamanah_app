@@ -1,6 +1,5 @@
-import 'package:farm_project/core/cubits/segments/segment_cubit.dart';
+import 'package:farm_project/core/cubits/app/app_config_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class EditGeneratorScreen extends StatefulWidget {
   const EditGeneratorScreen({super.key});
@@ -11,32 +10,16 @@ class EditGeneratorScreen extends StatefulWidget {
 
 class _EditGeneratorScreenState extends State<EditGeneratorScreen> {
   final _formKey = GlobalKey<FormState>();
-  final nameController = TextEditingController();
-  final typeController = TextEditingController();
-  final hoursController = TextEditingController();
-  final invoiceController = TextEditingController();
-  final oilPriceController = TextEditingController();
-  final maintenanceController = TextEditingController();
-  final oilChangeController = TextEditingController();
-  final filterCostController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    final segment = SegmentCubit().selectedSegment!;
-    nameController.text = segment.generatorName ;
-    typeController.text = segment.generatorType ;
-    hoursController.text = segment.generatorTotalHours.toString() ;
-    invoiceController.text = segment.generatorElectricityInvoice.toString() ;
-    oilPriceController.text = segment.generatorOilPrice.toString() ;
-    maintenanceController.text = segment.generatorMaintenanceCost.toString() ;
-    oilChangeController.text = segment.generatorOilChange.toString() ;
-    filterCostController.text = segment.generatorFiltersCost.toString() ;
+   
   }
 
   @override
   Widget build(BuildContext context) {
-    final cubit = SegmentCubit();
+    final cubit = AppConfigCubit();
 
     return Scaffold(
       appBar: AppBar(title: const Text('تفاصيل المولد')),
@@ -46,27 +29,27 @@ class _EditGeneratorScreenState extends State<EditGeneratorScreen> {
           key: _formKey,
           child: Column(
             children: [
-              _buildField(nameController, 'اسم المولد'),
-              _buildField(typeController, 'نوع المولد'),
-              _buildField(hoursController, 'عدد ساعات التشغيل', isNumber: true),
-              _buildField(invoiceController, 'فاتورة الكهرباء', isNumber: true),
-              _buildField(oilPriceController, 'سعر الزيت', isNumber: true),
-              _buildField(maintenanceController, 'تكلفة الصيانة', isNumber: true),
-              _buildField(oilChangeController, 'تكلفة تغيير الزيت', isNumber: true),
-              _buildField(filterCostController, 'تكلفة الفلاتر', isNumber: true),
+              _buildField(cubit.nameController, 'اسم المولد'),
+              _buildField(cubit.typeController, 'نوع المولد'),
+              _buildField(cubit.hoursController, 'عدد ساعات التشغيل', isNumber: true),
+              _buildField(cubit.invoiceController, 'فاتورة الكهرباء', isNumber: true),
+              _buildField(cubit.oilPriceController, 'سعر السولار', isNumber: true),
+              _buildField(cubit.maintenanceController, 'تكلفة الصيانة', isNumber: true),
+              _buildField(cubit.oilChangeController, 'تكلفة تغيير الزيت', isNumber: true),
+              _buildField(cubit.filterCostController, 'تكلفة الفلاتر', isNumber: true),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    await cubit.updateSegmentGenerator(
-                      name: nameController.text,
-                      type: typeController.text,
-                      hours: double.tryParse(hoursController.text) ?? 0,
-                      invoice: double.tryParse(invoiceController.text) ?? 0,
-                      oilPrice: double.tryParse(oilPriceController.text) ?? 0,
-                      maintenance: double.tryParse(maintenanceController.text) ?? 0,
-                      oilChange: double.tryParse(oilChangeController.text) ?? 0,
-                      filters: double.tryParse(filterCostController.text) ?? 0,
+                    await cubit.updateAppConfigGenerator(
+                      name: cubit.nameController.text,
+                      type: cubit.typeController.text,
+                      hours: double.tryParse(cubit.hoursController.text) ?? 0,
+                      invoice: double.tryParse(cubit.invoiceController.text) ?? 0,
+                      oilPrice: double.tryParse(cubit.oilPriceController.text) ?? 0,
+                      maintenance: double.tryParse(cubit.maintenanceController.text) ?? 0,
+                      oilChange: double.tryParse(cubit.oilChangeController.text) ?? 0,
+                      filters: double.tryParse(cubit.filterCostController.text) ?? 0,
                     );
                     Navigator.pop(context);
                   }

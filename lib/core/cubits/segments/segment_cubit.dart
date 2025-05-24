@@ -76,38 +76,6 @@ class SegmentCubit extends Cubit<SegmentState> {
     }
   }
 
-  Future<void> updateSegmentGenerator({
-    required String name,
-    required String type,
-    required double hours,
-    required double invoice,
-    required double oilPrice,
-    required double maintenance,
-    required double oilChange,
-    required double filters,
-  }) async {
-    emit(SegmentUpdateCalculationLoading());
-    try {
-      await _firebaseService.updateGeneratorForSegment(
-        sectorId: selectedSector!.id,
-        segmentId: selectedSegment!.id,
-        generatorData: {
-          'generatorName': name,
-          'generatorType': type,
-          'generatorTotalHours': hours,
-          'generatorElectricityInvoice': invoice,
-          'generatorOilPrice': oilPrice,
-          'generatorMaintenanceCost': maintenance,
-          'generatorOilChangeCost': oilChange,
-          'generatorFilterCost': filters,
-        },
-      );
-      emit(SegmentUpdateCalculationSuccess());
-      await updateSegmentsAndSetIntitial();
-    } catch (e) {
-      emit(SegmentUpdateCalculationFailure('فشل في تحديث بيانات المولد'));
-    }
-  }
   Future<void> updateContractorPersonCost(double cost) async {
   emit(SegmentUpdateCalculationLoading());
   try {
@@ -125,6 +93,7 @@ class SegmentCubit extends Cubit<SegmentState> {
 Future<void> updateLaborCosts({
   required double fertilizingCost,
   required double landWorkCost,
+  required int fertlizingHours,
   required double contractorCost,
 }) async {
   emit(SegmentUpdateCalculationLoading());
@@ -134,6 +103,7 @@ Future<void> updateLaborCosts({
       segmentId: selectedSegment!.id,
       fertilizingCost: fertilizingCost,
       landWorkCost: landWorkCost,
+      fertlizingHours: fertlizingHours,
       contractorCost: contractorCost,
     );
     emit(SegmentUpdateCalculationSuccess());

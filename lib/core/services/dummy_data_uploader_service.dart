@@ -1,3 +1,5 @@
+import 'package:farm_project/core/models/constant_workers_model.dart';
+import 'package:farm_project/core/models/generator_model.dart';
 import 'package:farm_project/core/models/sector_model.dart';
 import 'package:farm_project/core/models/segment_model.dart';
 import 'package:farm_project/core/models/irrigation_model.dart';
@@ -8,6 +10,12 @@ class DummyDataUploaderService {
   final FirebaseService _firebaseService = FirebaseService();
 
   Future<void> uploadDummyData() async {
+    await _uploadGenerator();
+    await _uploadConstantWorker();
+    //await _uploadPlams();
+  }
+
+  Future<void> _uploadPlams() async {
     for (int sectorIndex = 1; sectorIndex <= 1; sectorIndex++) {
       final sector = SectorModel(
         id: sectorIndex.toString(),
@@ -44,20 +52,11 @@ class DummyDataUploaderService {
           landServiceCost: 300,
           equipmentUsedCost: 200,
 
-          // Generator details
-          generatorTotalHours: 120.5,
-          generatorType: 'ابيض',
-          generatorName: 'مولد أبيض',
-          generatorElectricityInvoice: 750.0,
-          generatorOilPrice: 200.0,
-          generatorMaintenanceCost: 150.0,
-          generatorOilChange: 50.0,
-          generatorFiltersCost: 80.0,
-
           // Agricultural details
           fertilizingPrice: 600.0,
           contractorPersonsCost: 400.0,
           landWorkPrice: 500.0,
+          fertlizingHours: 10,
           equipmentCost: 350.0,
 
           // Irrigation
@@ -86,5 +85,25 @@ class DummyDataUploaderService {
         }
       }
     }
+  }
+
+  Future<void> _uploadGenerator() async {
+    final generator = GeneratorModel(
+      // Generator details
+      totalHours: 120.5,
+      type: 'ابيض',
+      name: 'مولد أبيض',
+      electricityInvoice: 750.0,
+      oilPrice: 200.0,
+      maintenanceCost: 150.0,
+      oilChange: 50.0,
+      filtersCost: 80.0,
+    );
+    await _firebaseService.updateGenerator(generatorData: generator.toJson());
+  }
+
+  Future<void> _uploadConstantWorker() async {
+    final worker = ConstantWorkerModel(type: 1, cost: 120);
+    await _firebaseService.updateConstantWorker(data: worker.toJson());
   }
 }

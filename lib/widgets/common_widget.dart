@@ -228,7 +228,7 @@ class DefaultButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: height ?? sizedH(context) * 0.060,
+      //height: height ?? sizedH(context) * 0.060,
       width: width ?? sizedW(context) * 0.85,
       decoration: BoxDecoration(
         color: buttonColor ?? kLightBlue,
